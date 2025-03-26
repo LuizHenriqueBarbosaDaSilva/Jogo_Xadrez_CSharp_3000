@@ -3,4 +3,4 @@ using JogoXadrez3000.tabuleiro;
 
 Tabuleiro tab = new Tabuleiro(8, 8);
 
-Console.WriteLine(tab);
+Console.WriteLine("Passou");

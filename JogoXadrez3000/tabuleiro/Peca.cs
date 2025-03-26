@@ -23,7 +23,7 @@ namespace JogoXadrez3000.tabuleiro
 
         public override string ToString()
         {
-            return GetType().Name[0].ToString(); // Retorna a primeira letra do nome da classe
+            return "Isso e um teste";
         }
     }
 }

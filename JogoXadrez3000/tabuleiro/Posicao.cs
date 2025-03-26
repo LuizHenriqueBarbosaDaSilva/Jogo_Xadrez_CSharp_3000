@@ -21,9 +21,6 @@ namespace JogoXadrez3000.tabuleiro
             return $"{linha},{coluna}"; 
 
         
-        }
-
-        
-    
+        }    
     }
 }

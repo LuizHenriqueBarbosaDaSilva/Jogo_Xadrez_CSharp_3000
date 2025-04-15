@@ -1,0 +1,18 @@
+﻿using JogoXadrez3000.tabuleiro;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace JogoXadrez3000.Xadrez
+{
+    class Torre : Peca
+    {
+        public Torre(Tabuleiro tab, Cor cor) : base(tab, cor) { }
+        public override string ToString()
+        {
+            return "T";
+        }
+    }
+}

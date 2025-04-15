@@ -24,5 +24,11 @@ namespace JogoXadrez3000.tabuleiro
         {
             return pecas[linhas, colunas];  
         }
+
+        public void ColocarPeca(Peca pe, Posicao posi)
+        {
+            pecas[posi.linha,posi.coluna] = pe;
+            pe.posicao = posi;
+        }
     }
 }

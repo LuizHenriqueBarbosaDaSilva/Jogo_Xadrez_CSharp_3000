@@ -3,20 +3,10 @@ using JogoXadrez3000.tabuleiro;
 using JogoXadrez3000.Xadrez;
 
 //Posição do tabuleiro!
-try { 
-    Tabuleiro tab = new Tabuleiro(8, 8);
+PosicaoXadrez pox = new PosicaoXadrez('c', 7);
+Console.WriteLine(pox);
 
-    tab.ColocarPeca(new Torre(tab, Cor.Preta), new Posicao(0, 0));
-    tab.ColocarPeca(new Torre(tab, Cor.Preta), new Posicao(1, 3));
-    tab.ColocarPeca(new Rei(tab, Cor.Preta), new Posicao(2, 4));
+Console.WriteLine(pox.convertPosicao());
 
 
-
-    Console.WriteLine("Impressão da tela!");
-    Tela.imprimirTabuleiro(tab);
-}
-catch (TabuleiroException e)
-{
-    Console.WriteLine(e.Message);
-}
 Console.ReadLine();

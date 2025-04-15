@@ -20,9 +20,9 @@ namespace JogoXadrez3000.tabuleiro
             pecas = new Peca[linhas,colunas];
         }
 
-        public override string ToString()
+        public Peca peca (int linhas, int colunas)
         {
-            return "";
+            return pecas[linhas, colunas];  
         }
     }
 }

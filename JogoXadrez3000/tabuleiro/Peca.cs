@@ -23,7 +23,7 @@ namespace JogoXadrez3000.tabuleiro
 
         public override string ToString()
         {
-            return "Isso e um teste";
+            return "Isso e um teste SSSSSSSSSSSSSSSSSSSS";
         }
     }
 }

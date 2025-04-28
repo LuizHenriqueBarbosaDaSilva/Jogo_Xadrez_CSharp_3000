@@ -36,7 +36,7 @@ namespace JogoXadrez3000.tabuleiro
             return peca(pos) != null;
         }
 
-        public void ColocarPeca(Peca pe, Posicao posi)
+        public void colocarPeca(Peca pe, Posicao posi)
         {
             if (existePeca(posi))
             {
@@ -45,11 +45,21 @@ namespace JogoXadrez3000.tabuleiro
             pecas[posi.linha, posi.coluna] = pe;
             pe.posicao = posi;
         }
+        public Peca retirarPeca(Posicao posi)
+        {
+            if (!existePeca(posi)) { return null; }
+            Peca aux = peca(posi);
+
+            aux.posicao = null;
+            pecas[posi.linha,posi.coluna] = null;
+            
+            return aux;
+        }
 
         public bool posicaoValida(Posicao pos)
         {
-            if (pos.linha < 0 || pos.coluna > linhas || pos.coluna < 0 || pos.coluna > colunas) { return false; }
-            return true;// Se a posição for verdadeira ela ira cortar o metodo de verificação assim não tendo a necessidade de else!  
+            return pos.linha >= 0 && pos.linha < linhas && pos.coluna >= 0 && pos.coluna < colunas;
+        
         }
 
         public void validarPosicao(Posicao pos)

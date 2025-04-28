@@ -3,18 +3,27 @@ using JogoXadrez3000.tabuleiro;
 using JogoXadrez3000.Xadrez;
 
 //Posição do tabuleiro!
-try { 
-    Tabuleiro tab = new Tabuleiro(8, 8);
+try {
+    PartidaDeXadrez partida = new PartidaDeXadrez();
+    while (!partida.terminada)
+    {
+        Console.Clear();
+        Tela.imprimirTabuleiro(partida.tab);
 
-    tab.ColocarPeca(new Torre(tab, Cor.Preta), new Posicao(0, 0));
-    tab.ColocarPeca(new Torre(tab, Cor.Preta), new Posicao(1, 3));
-    tab.ColocarPeca(new Rei(tab, Cor.Preta), new Posicao(2, 4));
+        Console.Write("Origem: ");
+        Posicao origem = Tela.lerPosicaoXadrez().convertPosicao();
 
-    tab.ColocarPeca(new Torre(tab, Cor.Branca), new Posicao(3, 5));
+        bool[,] posicoesPossives = partida.tab.peca(origem).movimentosPossiveis();
 
+        Console.Clear();
+        Tela.imprimirTabuleiro(partida.tab, posicoesPossives);
 
-    Console.WriteLine("Impressão da tela!");
-    Tela.imprimirTabuleiro(tab);
+        Console.WriteLine();
+        Console.Write("Destino: ");
+        Posicao destino = Tela.lerPosicaoXadrez().convertPosicao();
+
+        partida.executarMovimento(origem, destino);
+    }
 }
 catch (TabuleiroException e)
 {

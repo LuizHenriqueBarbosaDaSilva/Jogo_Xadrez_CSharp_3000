@@ -9,7 +9,38 @@ namespace JogoXadrez3000.tabuleiro
 {
     public class Tela
     {
-        public static void imprimirTabuleiro(Tabuleiro tab)
+        public static void ImprimirPartida(PartidaDeXadrez partida)
+        {
+            ImprimirTabuleiro(partida.tab);
+            Console.WriteLine();
+            ImprimirPecasCapturadas(partida);
+
+            Console.WriteLine($"Turno: {partida.turno}");
+            Console.WriteLine($"Aguardando jogador da peça {partida.jogadorAtual}");
+
+            Console.WriteLine();
+        }
+        public static void ImprimirPecasCapturadas(PartidaDeXadrez partida)
+        {
+            Console.WriteLine("Peças catpuradas:");
+            Console.Write("Brancas:");
+            ImprimirConjunto(partida.PecasCapturadas(Cor.Branca));
+            Console.Write("Pretas:");
+            ConsoleColor aux = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            ImprimirConjunto(partida.PecasCapturadas(Cor.Preta));
+            
+            Console.ForegroundColor= aux;
+            Console.WriteLine();
+        }
+        public static void ImprimirConjunto(HashSet<Peca> conjunto)
+        {
+            Console.Write("[");
+            foreach(Peca p in conjunto) { Console.Write($"{p} "); }
+            Console.Write("]\n");
+        }
+
+        public static void ImprimirTabuleiro(Tabuleiro tab)
         {
             for (int i = 0; i < tab.linhas; i++)
             {
@@ -77,7 +108,7 @@ namespace JogoXadrez3000.tabuleiro
                 else
                 {
                     ConsoleColor aux = Console.ForegroundColor;
-                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.Write(peca);
                     Console.ForegroundColor = aux;
                 }

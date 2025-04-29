@@ -14,7 +14,8 @@ namespace JogoXadrez3000.Xadrez
 
         public PosicaoXadrez(char coluna, int linha) 
         {
-            this.coluna = coluna;   
+            char colunaChar = char.ToLower(coluna);
+            this.coluna = colunaChar;
             this.linha = linha;
         }
 

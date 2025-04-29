@@ -7,22 +7,32 @@ try {
     PartidaDeXadrez partida = new PartidaDeXadrez();
     while (!partida.terminada)
     {
-        Console.Clear();
-        Tela.imprimirTabuleiro(partida.tab);
+        try
+        {
+            Console.Clear();
+            Tela.ImprimirPartida(partida);
+           
+            Console.Write("Origem: ");
+            Posicao origem = Tela.lerPosicaoXadrez().convertPosicao();
+            partida.ValidarPosicaoDeOrigem(origem);
 
-        Console.Write("Origem: ");
-        Posicao origem = Tela.lerPosicaoXadrez().convertPosicao();
+            bool[,] posicoesPossives = partida.tab.peca(origem).movimentosPossiveis();
 
-        bool[,] posicoesPossives = partida.tab.peca(origem).movimentosPossiveis();
+            Console.Clear();
+            Tela.imprimirTabuleiro(partida.tab, posicoesPossives);
 
-        Console.Clear();
-        Tela.imprimirTabuleiro(partida.tab, posicoesPossives);
+            Console.WriteLine();
+            Console.Write("Destino: ");
+            Posicao destino = Tela.lerPosicaoXadrez().convertPosicao();
+            partida.validarPosicaoDeDestino(origem, destino);
 
-        Console.WriteLine();
-        Console.Write("Destino: ");
-        Posicao destino = Tela.lerPosicaoXadrez().convertPosicao();
-
-        partida.executarMovimento(origem, destino);
+            partida.RealizaJogada(origem, destino);
+        }
+        catch (TabuleiroException e) 
+        { 
+            Console.WriteLine(e.Message); 
+            Console.ReadLine(); 
+        }
     }
 }
 catch (TabuleiroException e)

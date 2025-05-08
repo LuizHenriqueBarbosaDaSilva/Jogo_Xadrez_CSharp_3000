@@ -9,7 +9,8 @@ namespace JogoXadrez3000.Xadrez
 {
     class Peao : Peca
     {
-        public Peao(Tabuleiro tab, Cor cor) : base(tab, cor) { }
+        private PartidaDeXadrez partida;
+        public Peao(Tabuleiro tab, Cor cor, PartidaDeXadrez partida) : base(tab, cor) { this.partida = partida;  }
         public override string ToString() { return "P"; }
 
         private bool podeMover(Posicao posi)
@@ -32,12 +33,12 @@ namespace JogoXadrez3000.Xadrez
 
             Posicao pos = new Posicao(0, 0);
 
-            if (cor == Cor.Branca) 
+            if (cor == Cor.Branca)
             {
                 pos.definirValores(posicao.linha - 1, posicao.coluna); // Uma casa acima se for livre!
                 if (tab.posicaoValida(pos) && livre(pos))
                 {
-                    mat[pos.linha,pos.coluna] = true;
+                    mat[pos.linha, pos.coluna] = true;
                 }
                 pos.definirValores(posicao.linha - 2, posicao.coluna); // Duas casas acima! se estiver livre e a quanitdade de movimentos do peao for zero!
                 if (tab.posicaoValida(pos) && livre(pos) && qteMovimentos == 0)
@@ -54,27 +55,55 @@ namespace JogoXadrez3000.Xadrez
                 {
                     mat[pos.linha, pos.coluna] = true;
                 }
-                else
+                // #Jogada especial En Passant
+                if (posicao.linha == 3)
                 {
-                    pos.definirValores(posicao.linha + 1, posicao.coluna); // Uma casa abaixo se for livre!
-                    if (tab.posicaoValida(pos) && livre(pos))
+                    Posicao esquerda = new Posicao(posicao.linha, posicao.coluna -1);
+                    if (tab.posicaoValida(esquerda) && existeInimigo(esquerda) && tab.peca(esquerda) == partida.vulneralEnPassant)
                     {
-                        mat[pos.linha, pos.coluna] = true;
+                        mat[esquerda.linha, esquerda.coluna] = true;
                     }
-                    pos.definirValores(posicao.linha + 2, posicao.coluna); // Duas casas abaixo! se estiver livre e a quanitdade de movimentos do peao for zero!
-                    if (tab.posicaoValida(pos) && livre(pos) && qteMovimentos == 0)
+                    Posicao direita = new Posicao(posicao.linha, posicao.coluna + 1);
+                    if (tab.posicaoValida(direita) && existeInimigo(direita) && tab.peca(direita) == partida.vulneralEnPassant)
                     {
-                        mat[pos.linha, pos.coluna] = true;
+                        mat[direita.linha, direita.coluna] = true;
                     }
-                    pos.definirValores(posicao.linha + 1, posicao.coluna - 1); // Pode andar na diagonal se exister um inimigo! 
-                    if (tab.posicaoValida(pos) && existeInimigo(pos))
+                }
+            }
+            else
+            {
+                pos.definirValores(posicao.linha + 1, posicao.coluna); // Uma casa abaixo se for livre!
+                if (tab.posicaoValida(pos) && livre(pos))
+                {
+                    mat[pos.linha, pos.coluna] = true;
+                }
+                pos.definirValores(posicao.linha + 2, posicao.coluna); // Duas casas abaixo! se estiver livre e a quanitdade de movimentos do peao for zero!
+                if (tab.posicaoValida(pos) && livre(pos) && qteMovimentos == 0)
+                {
+                    mat[pos.linha, pos.coluna] = true;
+                }
+                pos.definirValores(posicao.linha + 1, posicao.coluna - 1); // Pode andar na diagonal se exister um inimigo! 
+                if (tab.posicaoValida(pos) && existeInimigo(pos))
+                {
+                    mat[pos.linha, pos.coluna] = true;
+                }
+                pos.definirValores(posicao.linha + 1, posicao.coluna + 1);  // Pode andar na diagonal se exister um inimigo! 
+                if (tab.posicaoValida(pos) && existeInimigo(pos))
+                {
+                    mat[pos.linha, pos.coluna] = true;
+                }
+                // #Jogada especial En Passant
+                if (posicao.linha == 4)
+                {
+                    Posicao esquerda = new Posicao(posicao.linha, posicao.coluna - 1);
+                    if (tab.posicaoValida(esquerda) && existeInimigo(esquerda) && tab.peca(esquerda) == partida.vulneralEnPassant)
                     {
-                        mat[pos.linha, pos.coluna] = true;
+                        mat[esquerda.linha, esquerda.coluna] = true;
                     }
-                    pos.definirValores(posicao.linha + 1, posicao.coluna + 1);  // Pode andar na diagonal se exister um inimigo! 
-                    if (tab.posicaoValida(pos) && existeInimigo(pos))
+                    Posicao direita = new Posicao(posicao.linha, posicao.coluna + 1);
+                    if (tab.posicaoValida(direita) && existeInimigo(direita) && tab.peca(direita) == partida.vulneralEnPassant)
                     {
-                        mat[pos.linha, pos.coluna] = true;
+                        mat[direita.linha, direita.coluna] = true;
                     }
                 }
             }

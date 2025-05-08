@@ -14,9 +14,11 @@ namespace JogoXadrez3000.Xadrez
         public Cor jogadorAtual { get; private set; }
         public bool terminada { get; private set; }
         public bool xeque {  get; private set; }
+        public Peca vulneralEnPassant { get; private set; } 
 
         private HashSet<Peca> pecas;
         private HashSet<Peca> capturadas;
+
 
         public PartidaDeXadrez()
         {
@@ -63,6 +65,25 @@ namespace JogoXadrez3000.Xadrez
                 tab.colocarPeca(T, destinoT);
             }
 
+            // #Jogada especial en passaant!
+            if (pe is Peao)
+            {
+                if (origem.coluna != destino.coluna && pecaCaputrada == null)
+                {
+                    Posicao posP;
+                    if (pe.cor == Cor.Branca)
+                    {
+                        posP = new Posicao(destino.linha +1,destino.coluna);
+                    }
+                    else
+                    {
+                        posP = new Posicao(destino.linha -1,destino.coluna);
+                    }
+                    pecaCaputrada = tab.retirarPeca(posP);
+                    capturadas.Add(pecaCaputrada);  
+                }
+            }
+
             return pecaCaputrada;
         }
         public void desfazMovimento(Posicao origem,Posicao destino, Peca pecaCapturada)
@@ -97,6 +118,26 @@ namespace JogoXadrez3000.Xadrez
                 T.incrementarQteMovimentos();
                 tab.colocarPeca(T, origemT);
             }
+            // #Jogada especial en passaant!
+            if (p is Peao)
+            {
+                if (origem.coluna != destino.coluna && pecaCapturada == vulneralEnPassant)
+                {
+                    Peca peao = tab.retirarPeca(destino);
+                    Posicao posP;
+                    if (p.cor == Cor.Branca) 
+                    {
+                        posP = new Posicao(3, destino.coluna);
+                    }
+                    else 
+                    {
+                        posP = new Posicao(4,destino.coluna);
+                    }
+                    tab.colocarPeca(peao, posP);
+
+                    
+                }
+            }
         }
         public void RealizaJogada(Posicao origem, Posicao destino)
         {
@@ -106,6 +147,20 @@ namespace JogoXadrez3000.Xadrez
                 desfazMovimento(origem,destino, pecaCapturada);
                 throw new TabuleiroException("Você não pode se colocar em xeque!");
             }
+            Peca p = tab.peca(destino);
+            // #Jogada especial promoção
+            if (p is Peao)
+            {
+                if (p.cor == Cor.Branca && destino.linha == 0 || p.cor == Cor.Preta && destino.linha == 7)
+                {
+                    p = tab.retirarPeca(destino);
+                    pecas.Remove(p);
+                    Peca dama = new Dama(tab, p.cor);
+                    tab.colocarPeca(dama, destino);
+                    pecas.Add(dama);
+                }
+            }
+
             if (estaEmXeque(adversaria(jogadorAtual))) { xeque = true; } else { xeque=false; }
             if (testeXequeMate(adversaria(jogadorAtual)))
             {
@@ -117,6 +172,17 @@ namespace JogoXadrez3000.Xadrez
                 MudaJogador();
             }
 
+            
+            
+            // #Jogada Especial En Passant!
+            if (p is Peao && (destino.linha == origem.linha -2 || destino.linha == origem.linha + 2))
+            {
+                vulneralEnPassant = p;
+            }
+            else
+            {
+                vulneralEnPassant = null;
+            }
                 
 
         }
@@ -242,11 +308,11 @@ namespace JogoXadrez3000.Xadrez
             colocarNovaPeca('f', 8, new Bispo(tab, Cor.Preta));
             // Dama e Rei
             colocarNovaPeca('d', 8, new Dama(tab, Cor.Preta));
-            colocarNovaPeca('e', 8, new Rei(tab, Cor.Preta));
+            colocarNovaPeca('e', 8, new Rei(tab, Cor.Preta, this));
             // Peões pretos (linha 7)
             for (char col = 'a'; col <= 'h'; col++) // Funciona por que o characther e tratado como unicode!
             {
-                colocarNovaPeca(col, 7, new Peao(tab, Cor.Preta));
+                colocarNovaPeca(col, 7, new Peao(tab, Cor.Preta, this));
             }
 
             // PEÇAS PRETAS EM NOVAS POSIÇÕES!
@@ -261,11 +327,11 @@ namespace JogoXadrez3000.Xadrez
             colocarNovaPeca('f', 1, new Bispo(tab, Cor.Branca));
             // Dama e Rei
             colocarNovaPeca('d', 1, new Dama(tab, Cor.Branca));
-            colocarNovaPeca('e', 1, new Rei(tab, Cor.Branca));
+            colocarNovaPeca('e', 1, new Rei(tab, Cor.Branca, this));
             // Peões brancos (linha 2)
             for (char col = 'a'; col <= 'h'; col++)
             {
-                colocarNovaPeca(col, 2, new Peao(tab, Cor.Branca));
+                colocarNovaPeca(col, 2, new Peao(tab, Cor.Branca, this));
             }
         }
     }

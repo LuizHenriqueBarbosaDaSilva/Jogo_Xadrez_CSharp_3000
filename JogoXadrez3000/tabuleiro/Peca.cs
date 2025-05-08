@@ -25,6 +25,10 @@ namespace JogoXadrez3000.tabuleiro
         {
             this.qteMovimentos++;
         }
+        public void decrementarQteMovimentos()
+        {
+            this.qteMovimentos--;
+        }
 
         public bool ExisteMovimentosPossiveis()
         {
@@ -41,7 +45,7 @@ namespace JogoXadrez3000.tabuleiro
             }
             return false;
         }
-        public bool podeMoverPara(Posicao pos)
+        public bool movimentosPossivel(Posicao pos)
         {
             return movimentosPossiveis()[pos.linha, pos.coluna];
         }

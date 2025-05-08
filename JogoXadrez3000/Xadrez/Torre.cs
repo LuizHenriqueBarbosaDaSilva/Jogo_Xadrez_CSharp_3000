@@ -23,6 +23,10 @@ namespace JogoXadrez3000.Xadrez
         public override bool[,] movimentosPossiveis()
         {
             bool[,] mat = new bool[tab.linhas, tab.colunas];
+            if (posicao == null)
+            {
+                throw new TabuleiroException("Erro interno: peça não está em nenhuma posição do tabuleiro.");
+            }
 
             Posicao pos = new Posicao(0, 0);
 

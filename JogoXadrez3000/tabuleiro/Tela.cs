@@ -14,11 +14,20 @@ namespace JogoXadrez3000.tabuleiro
             ImprimirTabuleiro(partida.tab);
             Console.WriteLine();
             ImprimirPecasCapturadas(partida);
-
             Console.WriteLine($"Turno: {partida.turno}");
-            Console.WriteLine($"Aguardando jogador da peça {partida.jogadorAtual}");
-
-            Console.WriteLine();
+            if (!partida.terminada)
+            {
+                Console.WriteLine($"Aguardando jogador da peça {partida.jogadorAtual}\n");
+                if (partida.xeque)
+                {
+                    Console.WriteLine("XEQUE!");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"XEQUEMATE!\nVencedor: {partida.jogadorAtual}");
+              
+            }
         }
         public static void ImprimirPecasCapturadas(PartidaDeXadrez partida)
         {
